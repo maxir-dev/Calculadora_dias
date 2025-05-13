@@ -87,49 +87,6 @@ if st.button("Calcular"):
             st.markdown(f"- {fecha.strftime('%d/%m/%Y')}: {nombre}")
     else:
         st.info("No hay feriados dentro del rango seleccionado.")
-    
-        # Mostrar feriados como calendario visual
-    import plotly.graph_objects as go
-    from calendar import monthrange
-
-    st.subheader("📆 Calendario visual del año")
-
-    for anio in anios:
-        meses = list(range(1, 13))
-        for mes in meses:
-            dias_mes = monthrange(anio, mes)[1]
-            dias = []
-            colores = []
-
-            for dia in range(1, dias_mes + 1):
-                fecha = datetime(anio, mes, dia)
-                if fecha.date() < fecha_inicio or fecha.date() >= fecha_fin:
-                    continue
-                dias.append(fecha.strftime("%d/%m"))
-                if fecha in feriados:
-                    colores.append("red")
-                elif fecha.weekday() >= 5:
-                    colores.append("lightgray")
-                else:
-                    colores.append("green")
-
-            if dias:
-                fig = go.Figure(data=[go.Bar(
-                    x=dias,
-                    y=[1]*len(dias),
-                    marker_color=colores,
-                    text=[feriados.get(fecha, "") for fecha in [datetime(anio, mes, int(d.split("/")[0])) for d in dias]],
-                    hoverinfo="text"
-                )])
-                fig.update_layout(
-                    title=f"{anio} - {mes:02d}",
-                    xaxis_title="Día",
-                    yaxis=dict(showticklabels=False),
-                    height=200,
-                    margin=dict(t=30, b=30)
-                )
-                st.plotly_chart(fig, use_container_width=True)
-
         
 #Para ejecutar --> streamlit run calculadora_streamlit.py en la terminal
 
